@@ -2,12 +2,12 @@ type BaseImpl = i32;
 type CheckImpl = i32;
 type Index = u32;
 
+
 const ROOT: Index = 0;
 
-trait TRIE<T> {
-
-    fn lookup(seq: &Vec<T>, start: Index) -> Option<Index> ;
-    fn common_prefix_search(seq: &[T], func: fn(Index, Index) -> (), start: Index, end: Index);
+trait TRIE {
+    fn lookup(seq: &str, start: Index) -> Option<Index> ;
+    fn common_prefix_search(seq: &str, func: fn(Index, Index) -> (), start: Index, end: Index);
 }
 
 
@@ -19,17 +19,15 @@ mod double_array {
     use std::fmt;
     use crate::double_array::DAError::UsedBaseValue;
 
-
-
     struct Node {
         base_impl: BaseImpl,
         check_impl: CheckImpl
     }
 
-    struct DoubleArray<T> {
+    struct DoubleArray {
         nodes: Vec<Node>,
         tails: Vec<Index>,
-        codes: [T]
+        codes: [Index]
     }
 
     enum DAError {
@@ -133,17 +131,23 @@ mod double_array {
             }
         }
     }
+}
 
-    impl DoubleArray<T> {
-//        fn create_code_table(data: Vec<&str>) -> HashMap<Char, Index> {
-//        }
+use std::fs::File;
+use std::io::{self, BufRead, BufReader};
 
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    for result in BufReader::new(File::open("sample.txt")?).lines() {
+        let l = result?;
+
+        println!("{}, len={}", l, l.len());
+        for c in l.chars() {
+            println!("{} ", c)
+        }
 
     }
-
+    Ok(())
 }
 
-fn main(){
-    println!("Hello")
-}
+
 
